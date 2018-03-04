@@ -1,5 +1,6 @@
 import argparse
 
+__author__ = "David Debreceni Jr"
 
 class ArgParser:
     def __init__(self):
