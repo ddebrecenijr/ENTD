@@ -5,6 +5,8 @@ import ssl
 from multiprocessing.pool import ThreadPool as Pool
 import json
 
+__author__ = "David Debreceni Jr"
+
 class Extractor():
     def __init__(self):
         self.pattern = r'(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}'
