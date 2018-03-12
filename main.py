@@ -3,26 +3,47 @@
 from Source.ArgumentParser import ArgParser
 from Source.ProcessPacket import ProcessPacket
 from Source.DomainInfoExtractor import Extractor
+from Source.SVMModel import SVMModel
 import json
 
 __author__ = "David Debreceni Jr"
+
 
 def main():
     arg_parser = ArgParser()
     kwargs = arg_parser.parse_args()
     if kwargs['update']:
+        # Handling Benign Domains
         domain_extractor = Extractor()
-        domains = domain_extractor.domain_reader('Source/one_million_domains.txt')
-        json_output = domain_extractor.multiprocess_extraction(domains[:kwargs['num_domains']], kwargs['threads'])
+        benign_domains = domain_extractor.domain_reader('Source/benign_domains.txt')
+        json_output = domain_extractor.multiprocess_extraction(
+            benign_domains[:kwargs['num_domains']], kwargs['threads']
+        )
         with open('JSON/benign_domain_dump.json', 'w') as file:
             file.write(json_output)
 
-    process_packet = ProcessPacket(kwargs['file'], kwargs['ports'])
-    json_output = json.dumps(process_packet.get_server_hello_data())
+        # Handling Malicious Domains
+        malicious_domains = domain_extractor.domain_reader('Source/malicious_domains.txt')
+        json_output = domain_extractor.multiprocess_extraction(
+            malicious_domains[:kwargs['num_domains']], kwargs['threads']
+        )
+        with open('JSON/malicious_domain_dump.json', 'w') as file:
+            file.write(json_output)
 
-    # For now we will write the json dumps to a file
-    with open('JSON/server_hello_dump.json', 'w') as file:
-        file.write(json_output)
+    svm = SVMModel('JSON/benign_domain_dump.json', 'JSON/malicious_domain_dump.json')
+    svm.generate_model()
+
+    if 'malicious' in kwargs['file']:
+        with open('JSON/malicious_domain_dump.json', 'r') as file:
+            json_output = file.read()
+    else:
+        process_packet = ProcessPacket(kwargs['file'], kwargs['ports'])
+        json_output = json.dumps(process_packet.get_server_hello_data())
+
+    svm.test_model(json_output)
+
+    svm.show()
+
 
 if __name__ == "__main__":
     main()
