@@ -2,25 +2,8 @@
 		"source_ip": "107.180.46.208",
 		"destination_ip": "192.168.2.151",
 		"source_port": 443,
-		"destination_port": 1051,
-		"version": "TLSv1.2",
-		"selected_ciphersuite": "ECDHE-RSA-AES256-SHA"
-	},
-	{
-		"source_ip": "195.78.120.93",
-		"destination_ip": "192.168.2.151",
-		"source_port": 443,
-		"destination_port": 1051,
-		"version": "TLSv1.2",
-		"selected_ciphersuite": "DHE-RSA-AES256-GCM-SHA384"
-	},
-	{
-		"source_ip": "78.140.150.198",
-		"destination_ip": "192.168.2.151",
-		"source_port": 443,
-		"destination_port": 1051,
+		"destination_port": 1081,
 		"version": "TLSv1",
-		"selected_ciphersuite": "DHE-RSA-AES256-SHA"
-	}
-	
+		"selected_ciphersuite": "TLS_RSA_WITH_3DES_EDE_CBC_SHA"
+	}	
 ]
