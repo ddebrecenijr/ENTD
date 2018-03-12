@@ -11,7 +11,7 @@ class Extractor():
     def __init__(self):
         self.pattern = r'(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}'
 
-    def domain_reader(self,file):
+    def domain_reader(self, file):
         """
         Extracts all domains from given file.
         :param file: File of any type containing any amount of domains
@@ -43,7 +43,7 @@ class Extractor():
                 "source_port": 443,
                 "destination_port": None,
                 "version": ssl_sock.version(),
-                "selected_ciphersuite": ssl_sock.cipher()
+                "selected_ciphersuite": ssl_sock.cipher()[0]
             }
             ssl_sock.close()
             return domain_info
