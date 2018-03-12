@@ -34,7 +34,7 @@ def main():
     svm.generate_model()
 
     if 'malicious' in kwargs['file']:
-        with open('JSON/malicious_domain_dump.json', 'r') as file:
+        with open('JSON/malicious_test.json', 'r') as file:
             json_output = file.read()
     else:
         process_packet = ProcessPacket(kwargs['file'], kwargs['ports'])
