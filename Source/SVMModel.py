@@ -189,7 +189,7 @@ class SVMModel:
                     FP += 1
         accuracy = (TP+TN)/(TP+TN+FP+FN)
         print(f'TP:{TP}, TN:{TN}, FP:{FP}, FN:{FN}')
-        print(f'Accuracy: {accuracy*100:.2f}%')
+        print(f'Accuracy: {accuracy*100:.4f}%')
 
     def test_model(self, json_data):
         if self.model is None:
