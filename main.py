@@ -30,7 +30,7 @@ def main():
         with open('JSON/malicious_domain_dump.json', 'w') as file:
             file.write(json_output)
 
-    svm = SVMModel('JSON/benign_domain_dump.json', 'JSON/malicious_domain_dump.json')
+    svm = SVMModel('JSON/benign_domain_dump_old.json', 'JSON/honeypot_subset.json')
     svm.generate_model()
 
     if 'malicious' in kwargs['file']:
