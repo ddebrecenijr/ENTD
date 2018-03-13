@@ -42,7 +42,7 @@ def main():
 
     svm.test_model(json_output)
 
-    svm.show()
+    # svm.show()
 
 
 if __name__ == "__main__":
