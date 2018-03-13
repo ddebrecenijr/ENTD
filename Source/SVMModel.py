@@ -1,8 +1,8 @@
 import json
 from sklearn import svm
 import numpy
-from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
+from mlxtend.plotting import plot_decision_regions
 import random
 import math
 
@@ -142,7 +142,6 @@ class SVMModel:
                     data[i][j] = (data[i][j] - means[j]) / stds[j]
 
             return data, means, stds
-            # return data, 0, 0
         else:
             for i in range(len(data)):
                 for j in range(len(data[i])):
@@ -151,6 +150,7 @@ class SVMModel:
 
     def generate_model(self):
         # Randomly mix up the data
+        random.seed(0)
         random.shuffle(self.data_set)
         # Take Approximately 2/3 to train with
         train_size = math.ceil(len(self.data_set)*(2/3))
@@ -188,7 +188,6 @@ class SVMModel:
                 else:
                     FP += 1
         accuracy = (TP+TN)/(TP+TN+FP+FN)
-        print(f'TP:{TP}, TN:{TN}, FP:{FP}, FN:{FN}')
         print(f'Accuracy: {accuracy*100:.4f}%')
 
     def test_model(self, json_data):
@@ -224,28 +223,16 @@ class SVMModel:
             else:
                 print('Found Malicious Data')
 
-        print(self.version_dict)
-        print(self.cipher_dict)
-
     def show(self):
-        ax = plt.axes(projection='3d')
-
-        version = [row[0] for row in self.train_sample_x]
-        cipher = [row[1] for row in self.train_sample_x]
-        train, = ax.plot(cipher, version, self.train_sample_y, 'rx')
-
-        version = [row[0] for row in self.test_sample_x]
-        cipher = [row[1] for row in self.test_sample_x]
-        test, = ax.plot(cipher, version, self.test_sample_y, 'bo')
-
-        test.set_label('Testing Set')
-        train.set_label('Training Set')
-        plt.legend()
-
-        ax.set_xlabel('Selected Cipher Suite')
-        ax.set_ylabel('SSL/TLS Version')
-        ax.set_zlabel('0 = Benign, 1 = Malicious')
-        plt.title('Support Vector Machine')
+        x = numpy.array(self.train_sample_x)
+        y = numpy.array(self.train_sample_y)
+        plot_decision_regions(X=x,
+                              y=y,
+                              clf=self.model,
+                              legend=2)
+        plt.xlabel('SSL/TLS Version')
+        plt.ylabel('Selected Ciphersuite')
+        plt.title('SVM Decision Region Boundary')
 
         plt.show()
 
