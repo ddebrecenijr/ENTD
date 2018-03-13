@@ -134,18 +134,19 @@ class SVMModel:
 
     def __standardize(self, data, mean=None, std=None):
         if mean is None and std is None:
-            means = numpy.mean(data, axis=0)
-            stds = numpy.std(data, axis=0)
-
-            for i in range(len(data)):
-                for j in range(len(data[i])):
-                    data[i][j] = (data[i][j] - means[j]) / stds[j]
-
-            return data, means, stds
+            # means = numpy.mean(data, axis=0)
+            # stds = numpy.std(data, axis=0)
+            #
+            # for i in range(len(data)):
+            #     for j in range(len(data[i])):
+            #         data[i][j] = (data[i][j] - means[j]) / stds[j]
+            #
+            # return data, means, stds
+            return data, 0, 0
         else:
-            for i in range(len(data)):
-                for j in range(len(data[i])):
-                    data[i][j] = (data[i][j] - mean[j]) / std[j]
+            # for i in range(len(data)):
+            #     for j in range(len(data[i])):
+            #         data[i][j] = (data[i][j] - mean[j]) / std[j]
             return data
 
     def generate_model(self):
@@ -230,6 +231,11 @@ class SVMModel:
                               y=y,
                               clf=self.model,
                               legend=2)
+        x = numpy.array(self.test_sample_x)
+        y = numpy.array(self.test_sample_y)
+        plot_decision_regions(X=x,
+                              y=y,
+                              clf=self.model)
         plt.xlabel('SSL/TLS Version')
         plt.ylabel('Selected Ciphersuite')
         plt.title('SVM Decision Region Boundary')
