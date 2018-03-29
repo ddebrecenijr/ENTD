@@ -1,7 +1,7 @@
 README
 ======
 
-ENTAD, Encrypted Network Traffic Anomaly Detector, is a Python 3 program for analyzing packet captures (pcaps) and distinguishing between benign and malicious traffic in the packet via port 443 (SSL/TLS).
+ENTD, Encrypted Network Traffic Detector, is a Python 3 program for analyzing packet captures (pcaps) and distinguishing between benign and malicious traffic in the packet via port 443 (SSL/TLS).
 
 Currently the features that are supported are as follows:
 * Reading Packet Capture and Extracting the Server Hello Information
