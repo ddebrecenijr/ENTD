@@ -1,7 +1,7 @@
 import sys
-import re
 import socket
 import ssl
+from Facade import RegexHelper
 from multiprocessing.pool import ThreadPool as Pool
 import json
 
@@ -9,7 +9,7 @@ __author__ = "David Debreceni Jr"
 
 class Extractor():
     def __init__(self):
-        self.pattern = r'(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}'
+        self.regex_helper = RegexHelper()
 
     def domain_reader(self, file):
         """
@@ -19,7 +19,7 @@ class Extractor():
         """
         try:
             with open(file, 'r') as domain_file:
-                return re.findall(self.pattern, domain_file.read())
+                return self.regex_helper.extract_all_domains(domain_file.read())
         except FileNotFoundError:
             print(f'{file} was not found.')
             sys.exit()
