@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from Source.ArgumentParser import ArgParser
+from Source.Facade.ArgParseHelper import ArgParser
 from Source.ProcessPacket import ProcessPacket
 from Source.DomainInfoExtractor import Extractor
 from Source.SVMModel import SVMModel
