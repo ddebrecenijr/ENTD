@@ -31,6 +31,9 @@ class SSL(object):
 
             ssl_sock.close()
             return domain_info
+        """
+        Error handling below
+        """
         except ssl.SSLError:
             print(f'{domain} failed to connect, ssl error.')
         except(TimeoutError, Socket.timeout):
