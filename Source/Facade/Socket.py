@@ -25,10 +25,15 @@ class Socket(object):
 
 
     def socket(self, domain):
+        """
+        Establish the new connection and timeout
+        """
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(30)
-
+        """
+        Error Handling
+        """
         except(TimeoutError, socket.timeout):
             print(f'{domain} connection attempt failed due to timeout.')
         except socket.gaierror:
