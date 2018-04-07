@@ -1,7 +1,9 @@
 import sys
-import socket
-import ssl
-from Facade import RegexHelper
+#import socket
+#import ssl
+from Source.Facade import Socket
+from Source.Facade import SSL
+from Source.Facade import RegexHelper
 from multiprocessing.pool import ThreadPool as Pool
 import json
 
@@ -26,11 +28,6 @@ class Extractor():
 
     def extract_data(self, domain):
         """
-        Extracts IP Address, CipherSuite, and SSL Version of Domain over port 443 and stores into a dictionary
-        :param domain: Domain Name
-        :return: Dictionary containing info
-        """
-
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(30)
@@ -57,6 +54,11 @@ class Extractor():
             print(f'{domain} refused connection.')
         except ConnectionResetError:
             print(f'{domain} connection forcibly closed.')
+        """
+
+        #Above commented version could be removed if the reviewer provides the go ahead
+
+        SSL(domain)
 
     def multiprocess_extraction(self, domains, num_threads=10):
         """
