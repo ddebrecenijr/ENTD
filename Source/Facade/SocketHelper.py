@@ -2,7 +2,7 @@ import socket
 
 __author__ = "Sneh Patel, Bryan Chen"
 
-class Socket(object):
+class SocketHelper(object):
     """
     A Facade for the library Socket
     """
