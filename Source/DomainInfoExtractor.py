@@ -1,8 +1,8 @@
 import sys
 #import socket
 #import ssl
-from Source.Facade import Socket
-from Source.Facade import SSL
+from Source.Facade import SocketHelper
+from Source.Facade import SSLHelper
 from Source.Facade import RegexHelper
 from multiprocessing.pool import ThreadPool as Pool
 import json

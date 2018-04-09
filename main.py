@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from Source.Facade.ArgParseHelper import ArgParser
+from Source.Facade.ArgParseHelper import ArgParseHelper
 from Source.ProcessPacket import ProcessPacket
 from Source.DomainInfoExtractor import Extractor
 from Source.SVMModel import SVMModel
@@ -10,7 +10,7 @@ __author__ = "David Debreceni Jr"
 
 
 def main():
-    arg_parser = ArgParser()
+    arg_parser = ArgParseHelper()
     kwargs = arg_parser.parse_args()
     if kwargs['update']:
         # Handling Benign Domains

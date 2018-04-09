@@ -21,7 +21,7 @@ class SocketHelper(object):
         try:
             return socket.inet_ntop(socket.AF_INET, ip)
         except ValueError:
-    return socket.inet_ntop(socket.AF_INET6, ip)
+            return socket.inet_ntop(socket.AF_INET6, ip)
 
 
     def socket(self, domain):
@@ -31,9 +31,9 @@ class SocketHelper(object):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(30)
-        """
-        Error Handling
-        """
+
+        #Error Handling
+        
         except(TimeoutError, socket.timeout):
             print(f'{domain} connection attempt failed due to timeout.')
         except socket.gaierror:
