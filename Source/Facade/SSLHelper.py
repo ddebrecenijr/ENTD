@@ -1,5 +1,4 @@
 import ssl
-from Source.Facade import SocketHelper
 
 __author__ = "Sneh Patel"
 
@@ -36,10 +35,6 @@ class SSL(object):
         
         except ssl.SSLError:
             print(f'{domain} failed to connect, ssl error.')
-        except(TimeoutError, Socket.timeout):
-            print(f'{domain} connection attempt failed due to timeout.')
-        except Socket.gaierror:
-            print(f'{domain} getaddrinfo failed.')
         except ConnectionRefusedError:
             print(f'{domain} refused connection.')
         except ConnectionResetError:
