@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7be65760-e4cf-4e1a-a81e-34f8204c7155}</ProjectGuid>
+    <ProjectGuid>{9b4f6fce-223f-4ae5-ac3c-f188bf7c6cba}</ProjectGuid>
     <ProjectHome />
     <StartupFile>main.py</StartupFile>
     <SearchPath />
@@ -20,8 +20,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.py" />
-    <Compile Include="Source\ArgumentParser.py" />
     <Compile Include="Source\DomainInfoExtractor.py" />
+    <Compile Include="Source\Facade\ArgParseHelper.py" />
+    <Compile Include="Source\Facade\DpktHelper.py" />
+    <Compile Include="Source\Facade\RegexHelper.py" />
+    <Compile Include="Source\Facade\SocketHelper.py" />
+    <Compile Include="Source\Facade\SqlHelper.py" />
+    <Compile Include="Source\Facade\SSLHelper.py" />
+    <Compile Include="Source\Facade\__init__.py" />
     <Compile Include="Source\ProcessPacket.py" />
     <Compile Include="Source\SVMModel.py" />
     <Compile Include="Source\__init__.py" />
@@ -33,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Source" />
+    <Folder Include="Source\Facade" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
