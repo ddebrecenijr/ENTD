@@ -1,2 +1,4 @@
 ..gitignore.un~
 .gitignore~
+
+Source/SQL/config.json
