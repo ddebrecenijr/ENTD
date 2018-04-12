@@ -24,6 +24,7 @@ Requirements
 * dpkt via `pip install dpkt`
 * mlxtend via `pip install mlxtend`
 * scikit-learn via `pip install scikit-learn`
+* mysqlclient via `pip install mysqlclient`
 
 Issues
 ------
