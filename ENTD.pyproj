@@ -20,15 +20,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="main.py" />
+    <Compile Include="Source\Abstract\SVMModelAbstract.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\Abstract\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\DomainInfoExtractor.py" />
     <Compile Include="Source\Facade\ArgParseHelper.py" />
     <Compile Include="Source\Facade\DpktHelper.py" />
     <Compile Include="Source\Facade\RegexHelper.py" />
     <Compile Include="Source\Facade\SocketHelper.py" />
-    <Compile Include="Source\Facade\SqlHelper.py" />
     <Compile Include="Source\Facade\SSLHelper.py" />
     <Compile Include="Source\Facade\__init__.py" />
     <Compile Include="Source\ProcessPacket.py" />
+    <Compile Include="Source\SQL\SqlHelper.py" />
+    <Compile Include="Source\SQL\__init__.py" />
     <Compile Include="Source\SVMModel.py" />
     <Compile Include="Source\__init__.py" />
     <Compile Include="__init__.py" />
@@ -36,10 +43,13 @@
   <ItemGroup>
     <Content Include="Source\benign_domains.txt" />
     <Content Include="Source\malicious_domains.txt" />
+    <Content Include="Source\SQL\config.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Source" />
     <Folder Include="Source\Facade" />
+    <Folder Include="Source\Abstract\" />
+    <Folder Include="Source\SQL\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
