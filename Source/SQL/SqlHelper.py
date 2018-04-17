@@ -51,23 +51,24 @@ class SQL_Helper:
         try:
             ret = self.cursor.execute(query)
         except Exception as err:
-            print("Error:{}\n{} is invalid.\nPlease reevaluate your query".format(err, query))
+            print("Error:{}\n{} is invalid.\nPlease re-evaluate your query".format(err, query))
             return None
         
         return ret
 
-    #IGNORE THIS FOR NOW
-    #expects table name as string and values in form of list
-    #where values correspond to table columns.
-    #Table: svm_data only has 2 columns: Version, Cipher
+    #expects table name as string and columns for insertion in form of list
+    #list entries must correspond to the following format:
+    #[source_ip, destination_ip, source_port, destination_port, version, selected_ciphersuite]
     def add_to_table(self, values, name):
         query = "INSERT INTO " + name + " VALUES ("
         for item in values:
             query = query + item + ", "
         query = query[:-2] + ")"
+
         self.send_query(query)
+        self.database.commit()
     
-    #expects table name as string. returns all values from table entries as tuple of tuples.
+    #expects table name as string. returns all table entries in a dict of lists
     def read_all_from_table(self, name):
         query = "SELECT * FROM " + name
         ret = self.send_query(query)
@@ -78,3 +79,4 @@ class SQL_Helper:
                 zip(self.__benign_and_malicious_columns, rows[i])
             ) for i in range(len(rows))
         ]
+
