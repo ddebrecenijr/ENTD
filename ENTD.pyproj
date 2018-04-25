@@ -37,6 +37,9 @@
     <Compile Include="Source\Sniffer\ipv4.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\Sniffer\tcp.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\SQL\SqlHelper.py" />
     <Compile Include="Source\SQL\__init__.py" />
     <Compile Include="Source\SVMModel.py" />
