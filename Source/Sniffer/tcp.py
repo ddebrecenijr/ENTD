@@ -104,7 +104,4 @@ class TCP(Structure):
 
 	@property
 	def Urgent_Pointer(self):
-		if self.urg:
-			return self.urgp
-		else:
-			return None
+        return self.urgp
