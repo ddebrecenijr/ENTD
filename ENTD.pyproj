@@ -34,6 +34,12 @@
     <Compile Include="Source\Facade\SSLHelper.py" />
     <Compile Include="Source\Facade\__init__.py" />
     <Compile Include="Source\ProcessPacket.py" />
+    <Compile Include="Source\Sniffer\ipv4.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Source\Sniffer\tcp.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\SQL\SqlHelper.py" />
     <Compile Include="Source\SQL\__init__.py" />
     <Compile Include="Source\SVMModel.py" />
@@ -49,6 +55,7 @@
     <Folder Include="Source" />
     <Folder Include="Source\Facade" />
     <Folder Include="Source\Abstract\" />
+    <Folder Include="Source\Sniffer\" />
     <Folder Include="Source\SQL\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
