@@ -1,7 +1,7 @@
 ..gitignore.un~
 .gitignore~
 
-Source/SQL/config.json
-Source/__pycache__/
-Source/Facade/__pycache__/
-Source/SQL/__pycache__/
+/Source/SQL/config.json
+/Source/__pycache__/
+/Source/Facade/__pycache__/
+/Source/SQL/__pycache__/
