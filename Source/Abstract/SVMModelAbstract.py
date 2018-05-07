@@ -4,19 +4,19 @@ __author__ = "David Debreceni Jr"
 
 class SVM_Model_Abstract(ABC):
     def __init__(self):
-        self.source_ip_index = 1
-        self.dest_ip_index = 1
-        self.source_port_index = 1
-        self.dest_port_index = 1
-        self.version_index = 1
-        self.cipher_dict = 1
+        self.__source_ip_index = 1
+        self.__dest_ip_index = 1
+        self.__source_port_index = 1
+        self.__dest_port_index = 1
+        self.__version_index = 1
+        self.__cipher_dict = 1
 
-        self.source_ip_dict = {}
-        self.dest_ip_dict = {}
-        self.source_port_dict = {}
-        self.dest_port_dict = {}
-        self.version_dict = {}
-        self.cipher_dict = {}
+        self.__source_ip_dict = {}
+        self.__dest_ip_dict = {}
+        self.__source_port_dict = {}
+        self.__dest_port_dict = {}
+        self.__version_dict = {}
+        self.__cipher_dict = {}
 
     # Indexes
 

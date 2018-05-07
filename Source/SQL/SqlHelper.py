@@ -6,7 +6,7 @@ __author__ = "Dallas Foglia, David Debreceni Jr"
 class SQL_Helper:
 
 
-    def __init__(self, config_file='config.json'):
+    def __init__(self, config_file='Source/SQL/config.json'):
         self.config_data = self.__read_config(config_file)
 
         self.database = MySQLdb.connect(

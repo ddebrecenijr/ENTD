@@ -1,27 +1,41 @@
-from Abstract.SVMModelAbstract import SVM_Model_Abstract
+from Source.SQL.SqlHelper import SQL_Helper
 from mlxtend.plotting import plot_decision_regions
 from sklearn.svm import SVC
-from SQL.SqlHelper import SQL_Helper
 
 import math
-import numpy as np
+import matplotlib.pyplot as plt
+import numpy
 import random
 
 __author__ = "David Debreceni Jr"
 
-class SVM_Model(SVM_Model_Abstract):
+class SVMModel:
     """
     Train and Implement a Support Vector Machine Model using features:
     TLS Version; Selected CipherSuite;
     """
 
     def __init__(self):
+        self.__source_ip_index = 1
+        self.__dest_ip_index = 1
+        self.__source_port_index = 1
+        self.__dest_port_index = 1
+        self.__version_index = 1
+        self.__cipher_index = 1
+
+        self.__source_ip_dict = {}
+        self.__dest_ip_dict = {}
+        self.__source_port_dict = {}
+        self.__dest_port_dict = {}
+        self.__version_dict = {}
+        self.__cipher_dict = {}
+
         self.sql_helper = SQL_Helper()
         self.benign_data = self.__load_data("benign_domains")
         self.malicious_data = self.__load_data("malicious_domains")
         self.data_set = []
-        self.__extract_features(self.benign_data)
-        self.__extract_features(self.malicious_data)
+        self.__extract_features(self.benign_data, 0)
+        self.__extract_features(self.malicious_data, 1)
 
         self.model = SVC()
         self.train_sample_x = None
@@ -38,23 +52,26 @@ class SVM_Model(SVM_Model_Abstract):
         except Exception as error:
             print(f'{error}')
     
-    def __extract_features(self, data):
+    def __extract_features(self, data, y_val):
         for x in data:
+            temp = []
             try:
-                if data['Version'] not in self.version_dict:
-                    self.version_dict({data['Version']: self.version_index})
-                    self.data_set.append(self.version_index)
+                if x['Version'] not in self.__version_dict:
+                    self.__version_dict.update({x['Version']: self.__version_index})
+                    temp.append(self.__version_index)
                     # Update Index after adding to dictionary
-                    self.version_index(self.version_index + 1)
+                    self.__version_index += 1
                 else:
-                    self.data_set.append(self.version_dict.get(data['Version']))
+                    temp.append(self.__version_dict.get(x['Version']))
 
-                if data['CipherSuite'] not in self.cipher_dict:
-                    self.cipher_dict({data['CipherSuite']: self.cipher_index})
-                    self.data_set.append(self.cipher_index)
-                    self.cipher_index(self.cipher_index + 1)
+                if x['CipherSuite'] not in self.__cipher_dict:
+                    self.__cipher_dict.update({x['CipherSuite']: self.__cipher_index})
+                    temp.append(self.__cipher_index)
+                    self.__cipher_index += 1
                 else:
-                    self.data_set.append(self.cipher_dict.get(data['CipherSuite']))
+                    temp.append(self.__cipher_dict.get(x['CipherSuite']))
+                temp.append(y_val)
+                self.data_set.append(temp)
             except TypeError:
                 continue
 
@@ -67,7 +84,7 @@ class SVM_Model(SVM_Model_Abstract):
                 for j in range(len(data[i])):
                     data[i][j] = (data[i][j] - means[j]) / stds[j]
 
-            return data, 0, 0
+            return data, means, stds
         else:
             for i in range(len(data)):
                 for j in range(len(data[i])):
@@ -118,3 +135,11 @@ class SVM_Model(SVM_Model_Abstract):
         accuracy = (TP+TN)/(TP+TN+FP+FN)
         return accuracy*100
 
+    def show(self):
+        x = numpy.array(self.train_sample_x)
+        y = numpy.array(self.train_sample_y)
+        plot_decision_regions(X=x, y=y, clf=self.model)
+        plt.xlabel('SSL/TLS Version')
+        plt.ylabel('Selected CipherSuite')
+        plt.title('SVM Decision Region Boundary')
+        plt.show()
