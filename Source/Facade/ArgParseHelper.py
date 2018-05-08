@@ -18,7 +18,7 @@ class ArgParseHelper(object):
 
     def __build_args(self):
         ap = argparse.ArgumentParser()
-        ap.add_argument('-f', help='Name of PCAP File', required=True, nargs='?')
+        ap.add_argument('-f', help='Name of PCAP File', required=False, nargs='?')
         ap.add_argument('-p', help='Ports', required=False, nargs='?')
         ap.add_argument('-u', help='Update Domain JSON List', required=False, nargs=1)
         ap.add_argument('-s', help='Number of Threads, Defaults to 10', required=False, nargs=1, type=int)
