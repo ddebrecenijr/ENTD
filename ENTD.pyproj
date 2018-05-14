@@ -23,6 +23,9 @@
     <Compile Include="Source\Abstract\SVMModelAbstract.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\Abstract\TLSHelper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\Abstract\__init__.py">
       <SubType>Code</SubType>
     </Compile>
