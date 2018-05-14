@@ -9,6 +9,7 @@ from sklearn.model_selection import StratifiedKFold
 import math
 import matplotlib.pyplot as plt
 import numpy
+import random
 
 __author__ = "David Debreceni Jr"
 
@@ -29,10 +30,8 @@ class SVMModel:
         self.model = SVC(kernel='poly')
         self.train_sample_x = None
         self.train_sample_y = None
-        self.train_means = None
-        self.train_std = None
-        self.train_sample_x = None
-        self.train_sample_y = None
+        self.test_sample_x = None
+        self.test_sample_y = None
         self.predicted = None
 
     def __load_data(self, table_name, num=None):
@@ -67,13 +66,26 @@ class SVMModel:
             self.data_set.append(temp)
 
     def train_model(self):
+        random.seed(0)
+        random.shuffle(self.data_set)
+
+        train_size = math.ceil(len(self.data_set)*(2/3))
+        self.train_sample_x = [row[:-1] for row in self.data_set[train_size:]]
+        self.test_sample_x = [row[:-1] for row in self.data_set[:train_size]]
+        self.train_sample_y = [row[-1] for row in self.data_set[train_size:]]
+        self.test_sample_y = [row[-1] for row in self.data_set[:train_size]]
+
+        self.model = SVC(kernel='rbf')
+        self.model.fit(self.train_sample_x, self.train_sample_y)
+
+    def generate_roc_curve(self):
         X = numpy.c_[[row[:-1] for row in self.data_set]]
         y = numpy.c_[[row[-1] for row in self.data_set]]
         c,r = y.shape
         y = y.reshape(c,)
 
         cv = StratifiedKFold(n_splits=5)
-        classifier = SVC(kernel='linear', probability=True, random_state=numpy.random.RandomState(0))
+        classifier = SVC(kernel='rbf', probability=True, random_state=numpy.random.RandomState(0))
 
         tprs = []
         aucs = []
