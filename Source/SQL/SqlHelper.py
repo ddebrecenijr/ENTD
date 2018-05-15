@@ -80,3 +80,13 @@ class SQL_Helper:
             ) for i in range(len(rows))
         ]
 
+    def read_x_from_table(self, name, num):
+        query = f"SELECT * FROM {name} LIMIT {num}"
+        ret = self.send_query(query)
+        rows = self.cursor.fetchall()
+        return [
+            dict(
+                zip(self.__benign_and_malicious_columns, rows[i])
+            ) for i in range(len(rows))
+        ]
+

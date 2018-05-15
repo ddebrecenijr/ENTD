@@ -32,8 +32,8 @@ def main():
 
     svm = SVMModel()
     svm.train_model()
-    print(svm.model_accuracy())
-    svm.show()
+    #print(svm.model_accuracy())
+    #svm.show()
 
     #if 'malicious' in kwargs['file']:
     #    with open('JSON/malicious_test.json', 'r') as file:
