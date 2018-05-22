@@ -5,9 +5,11 @@ from Source.ProcessPacket import ProcessPacket
 from Source.DomainInfoExtractor import Extractor
 from Source.SVMModel import SVMModel
 import json
+import os
 
 import socket
-
+from Source.Sniffer.ethernet import Ethernet
+from Source.Sniffer.ipv4 import IPv4
 
 __author__ = "David Debreceni Jr"
 
@@ -49,8 +51,33 @@ def main():
 
     #svm.show()
 
-    sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-    print(sniffer.recvfrom(65565)[0])
+    sniffer = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(0x003))
+    try:
+        while True:
+            raw_buffer = sniffer.recvfrom(65565)[0]
 
+            ethernet = Ethernet(raw_buffer[0:14])
+            print('--- ETHERNET FRAME ---')
+            print(f'Destination Address: {ethernet.Destination_Address}')
+            print(f'Source Address: {ethernet.Source_Address}')
+            print(f'Type: {ethernet.Type}')
+
+            if ethernet.type == 8:
+                ip = IPv4(raw_buffer[14:34])
+                print('--- IPv4 FRAME ---')
+                print(f'Version: {ip.Version}')
+                print(f'IP Header Length: {ip.IP_Header_Length}')
+                print(f'Type of Service: {ip.Type_of_Service}')
+                print(f'Total Length: {ip.Total_Length}')
+                print(f'Identification: {ip.Identification}')
+                print(f'Time to Live: {ip.Time_to_Live}')
+                print(f'Protocol: {ip.Protocol}')
+                print(f'Header Checksum: {ip.Header_Checksum}')
+                print(f'Source Address: {ip.Source_Address}')
+                print(f'Destination Address: {ip.Destination_Address}')
+            
+
+    except KeyboardInterrupt:
+        os.exit()
 if __name__ == "__main__":
     main()
