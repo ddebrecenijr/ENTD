@@ -6,6 +6,9 @@ from Source.DomainInfoExtractor import Extractor
 from Source.SVMModel import SVMModel
 import json
 
+import socket
+
+
 __author__ = "David Debreceni Jr"
 
 
@@ -30,8 +33,8 @@ def main():
     #    with open('JSON/malicious_domain_dump.json', 'w') as file:
     #        file.write(json_output)
 
-    svm = SVMModel()
-    svm.train_model()
+#    svm = SVMModel()
+#    svm.train_model()
     #print(svm.model_accuracy())
     #svm.show()
 
@@ -46,6 +49,8 @@ def main():
 
     #svm.show()
 
+    sniffer = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
+    print(sniffer.recvfrom(65565)[0])
 
 if __name__ == "__main__":
     main()
