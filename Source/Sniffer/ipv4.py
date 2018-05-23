@@ -7,7 +7,7 @@ __author__ = "David Debreceni Jr"
 """
 Convert the IPv4 header from its bytes into a more readable class.
 """
-class IPv4(Structure):
+class IPv4(BigEndianStructure):
 	_fields_ = [
 		("ihl", c_ubyte, 4),
 		("version", c_ubyte, 4),
@@ -18,8 +18,8 @@ class IPv4(Structure):
 		("ttl", c_ubyte),
 		("proto", c_ubyte),
 		("check", c_ushort),
-		("src", c_ulong),
-		("dest", c_ulong)
+		("src", c_uint),
+		("dest", c_uint)
 	]
 
 	def __new__(self, data=None):
@@ -76,9 +76,9 @@ class IPv4(Structure):
 	def Source_Address(self):
 		# 32 bits
         # Converting to readable IP Address
-		return socket.inet_ntoa(struct.pack("<L", self.src))
+                return socket.inet_ntoa(struct.pack("<L", self.src))[::-1]
 
 	@property
 	def Destination_Address(self):
 		# 32 bits
-		return socket.inet_ntoa(struct.pack("<L", self.dest))
+                return socket.inet_ntoa(struct.pack("<L", self.dest))[::-1]

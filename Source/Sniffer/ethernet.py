@@ -3,7 +3,7 @@ from ctypes import *
 
 __author__ = "David Debreceni Jr"
 
-class Ethernet(Structure):
+class Ethernet(BigEndianStructure):
     _fields_ = [
             ("dest", c_char*6),
             ("src", c_char*6),
