@@ -9,8 +9,8 @@ Convert the IPv4 header from its bytes into a more readable class.
 """
 class IPv4(BigEndianStructure):
 	_fields_ = [
-		("ihl", c_ubyte, 4),
 		("version", c_ubyte, 4),
+		("ihl", c_ubyte, 4),
 		("tos", c_ubyte),
 		("len", c_ushort),
 		("id", c_ushort),
@@ -76,9 +76,9 @@ class IPv4(BigEndianStructure):
 	def Source_Address(self):
 		# 32 bits
         # Converting to readable IP Address
-                return socket.inet_ntoa(struct.pack("<L", self.src))[::-1]
+		return socket.inet_ntoa(struct.pack("<L", self.src)[::-1])
 
 	@property
 	def Destination_Address(self):
 		# 32 bits
-                return socket.inet_ntoa(struct.pack("<L", self.dest))[::-1]
+		return socket.inet_ntoa(struct.pack("<L", self.dest)[::-1])
