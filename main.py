@@ -5,7 +5,7 @@ from Source.ProcessPacket import ProcessPacket
 from Source.DomainInfoExtractor import Extractor
 from Source.SVMModel import SVMModel
 import json
-import os
+import sys
 
 import socket
 from Source.Sniffer.ethernet import Ethernet
@@ -54,12 +54,19 @@ def main():
     #svm.show()
 
     sniffer = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(0x003))
-    try:
-        while True:
+    while True:
+        try:
             raw_buffer = sniffer.recvfrom(65565)[0]
 
             ethernet = Ethernet(raw_buffer[0:14])
-            if ethernet.Type == hex(8):
+            if ethernet.Type == 'IPv4':
+                if ip.Protocol == "TCP":
+                    tcp = TCP(raw_buffer[34:54])
+                    rec = RecordProtocol(raw_buffer[54:59])
+                    server = ServerHello(raw_buffer[59:])
+
+                    if server.Handshake_Type == "Server_Hello":
+
 
                 print('--- ETHERNET FRAME ---')
                 print(f'Destination Address: {ethernet.Destination_Address}')
@@ -79,7 +86,7 @@ def main():
                 print(f'Source Address: {ip.Source_Address}')
                 print(f'Destination Address: {ip.Destination_Address}')
 
-                if ip.Protocol.equals("TCP"):
+                if ip.Protocol == "TCP":
 
                     tcp = TCP(raw_buffer[34:54])
                     print('--- TCP FRAME ---')
@@ -94,16 +101,22 @@ def main():
 
                     server = ServerHello(raw_buffer[59:])
                     print('--- SERVER HELLO ---')
-                    print(f'Handshake Type: {server.Hanshake_type}')
+                    print(f'Handshake Type: {server.Handshake_Type}')
                     print(f'Length: {server.Length}')
                     print(f'Version: {server.Version}')
                     print(f'Random: {server.Random}')
                     print(f'Session ID Length: {server.Session_ID_Length}')
                     print(f'Selected CipherSuite: {server.CipherSuite}')
 
-            
+                    input()
 
-    except KeyboardInterrupt:
-        os.exit()
+                    print()
+                    print()
+
+            
+        except ValueError:
+            continue
+        except KeyboardInterrupt:
+            sys.exit()
 if __name__ == "__main__":
     main()
