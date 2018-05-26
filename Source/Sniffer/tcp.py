@@ -6,12 +6,13 @@ __author__ = "David Debreceni Jr"
 """
 Convert the TCP Header from its bytes into a more readable class.
 """
-class TCP(Structure):
+class TCP(BigEndianStructure):
+	_pack_ = 1
 	_fields_ = [
 		("src", c_ushort),
 		("dest", c_ushort),
-		("seq", c_ulong),
-		("ack", c_ulong),
+		("seq", c_uint),
+		("ack", c_uint),
 		("off", c_ubyte, 4),
 		("res", c_ubyte, 3),
 		("ns", c_ubyte, 1),
@@ -44,7 +45,7 @@ class TCP(Structure):
 
 	@property
 	def Sequence_Number(self):
-		return self.seq
+		return int(self.seq)
 
 	@property
 	def Acknowledgment_Number(self):
@@ -104,4 +105,4 @@ class TCP(Structure):
 
 	@property
 	def Urgent_Pointer(self):
-        return self.urgp
+		return self.urgp
