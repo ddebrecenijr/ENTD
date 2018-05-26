@@ -5,6 +5,19 @@ TLS_VERSIONS = {
     0x303 : "TLSv1.2"
 }
 
+HANDSHAKE_TYPES = {
+    0x00: "Hello_Request",
+    0x01: "Client_Hello",
+    0x02: "Server_Hello",
+    0x0B: "Certificate",
+    0x0C: "Server_Key_Exchange",
+    0x0D: "Certificate_Request",
+    0x0E: "Server_Done",
+    0x0F: "Certificate_Verify",
+    0x10: "Client_Key_Exchange",
+    0x14: "Finished"
+}
+
 CIPHERSUITES = {
     # HIGH PRIORITY
     0x009F : ['TLS_DHE_RSA_WITH_AES_256_GCM_SHA384', 'DHE-RSA-AES256-GCM-SHA384'],

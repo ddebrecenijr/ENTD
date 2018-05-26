@@ -1,10 +1,13 @@
 from ctypes import *
+import binascii
+import Source\Abstract\TLSHelper
 
 __author__ = "David Debreceni Jr"
 
 """
 Convert SSL/TLS Record Protocol bytes to more readable class.
 """
+
 class RecordProtocol(BigEndianStructure):
     _pack_ = 1
     _fields_ = [
@@ -36,85 +39,11 @@ class RecordProtocol(BigEndianStructure):
     def Length(self):
         return self.len
 
-class Handshake_Protocol(Structure):
-    _fields_ = [
-        ("type", c_ubyte)
-    ]
-
-    def __new__(self, data=None):
-        return self.from_buffer_copy(data)
-
-    def __init__(self, data=None):
-        pass
-
-    @property
-    def Type(self):
-        try:
-            return eval(HANDSHAKE_TYPES.get(self.type))
-        except NameError:
-            return None
-
-class Client_Hello(Structure):
+class Server_Hello(BigEndianStructure):
+    _pack_ = 1
     _fields_ = [
         ("type", c_ubyte),
-        ("len", c_uint, 24),
-        ("version", c_ushort),
-        ("random", c_char * 32),
-        ("session_id_len", c_ubyte),
-        ("cipher_suites_len", c_ushort)
-    ]
-
-    def __new__(self, data=None):
-        return self.from_buffer_copy(data)
-
-    def __init__(self, data=None):
-        pass
-
-    @property
-    def Handshake_Type(self):
-        return HANDSHAKE_TYPES.get(self.type)
-
-    @property
-    def Length(self):
-        return __shift_right(self.len, 1)
-
-    @property
-    def Version(self):
-        return VERSIONS.get(self.version)
-
-    @property 
-    def Random(self):
-        return self.random
-
-    @property
-    def Session_ID_Length(self):
-        return self.session_id_length
-
-    @property
-    def Cipher_Suites_Length(self):
-        return self.cipher_suites_len
-
-    @property
-    def Cipher_Suites(self):
-        class CipherSuites(Structure):
-            _fields_ = [("cipher_suites", c_char * self.cipher_suites_len)]
-
-            def __new__(self, data=None):
-                return self.from_buffer_copy(data)
-
-            def __init__(self, data=None):
-                pass
-
-            @property
-            def Cipher_Suites(self):
-                return self.cipher_suites
-
-        return CipherSuites(data[26:]).Cipher_Suites
-
-class Server_Hello(Structure):
-    _fields_ = [
-        ("type", c_ubyte),
-        ("len", c_uint, 24),
+        ("len", c_char*3),
         ("version", c_ushort),
         ("random", c_char * 32),
         ("session_id_length", c_ubyte),
@@ -129,19 +58,19 @@ class Server_Hello(Structure):
 
     @property
     def Handshake_Type(self):
-        return HANDSHAKE_TYPES.get(self.type)
+        return TLSHelper.HANDSHAKE_TYPES.get(self.type)
 
     @property
     def Length(self):
-        return __shift_right(self.len, 1)
+        return int(self.len)
 
     @property
     def Version(self):
-        return VERSIONS.get(self.version)
+        return TLSHelper.TLS_VERSIONS.get(self.version)
 
     @property
     def Random(self):
-        return self.random
+        return binascii.hexlify(self.random)
 
     @property
     def Session_ID_Length(self):
@@ -149,33 +78,6 @@ class Server_Hello(Structure):
 
     @property
     def Cipher_Suite(self):
-        return self.cipher_suite
+        return TLSHelper.CIPHERSUITES[self.cipher_suite][0]
 
-VERSIONS = {
-    0x0300 : "SSLv3",
-    0x0301 : "TLSv1",
-    0x0302 : "TLSv1.1",
-    0x0303 : "TLSv1.2"
-}
 
-HANDSHAKE_TYPES = {
-    0x00 : "Hello_Request",
-    0x01 : "Client_Hello", 
-    0x02 : "Server_Hello", 
-    0x0b : "Certificate", 
-    0x0c : "Server_Key_Exchange",
-    0x0d : "Certificate_Request",
-    0x0e : "Server_Done",
-    0x0f : "Certificate_Verify",
-    0x10 : "Client_Key_Exchange",
-    0x14 : "Finished"
-}
-
-def __shift_right(data, n):
-    """
-    Shift the data, n bytes to the right
-    :param data: Data to be shifted
-    :param n: Bytes to be shifted by
-    :return: Shifted data
-    """
-    return (data >> (8 * n))
