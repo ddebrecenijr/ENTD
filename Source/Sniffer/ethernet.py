@@ -1,4 +1,3 @@
-import struct
 from ctypes import *
 
 __author__ = "David Debreceni Jr"
@@ -7,7 +6,7 @@ class Ethernet(BigEndianStructure):
     _fields_ = [
             ("dest", c_char*6),
             ("src", c_char*6),
-            ("type", c_ubyte)
+            ("type", c_ushort)
     ]
 
     def __new__(self, data=None):
@@ -26,7 +25,7 @@ class Ethernet(BigEndianStructure):
 
     @property
     def Type(self):
-        return self.type
+        return hex(self.type)
 
     def __get_mac_addr(self, raw):
         return ':'.join(map('{:02x}'.format, raw)).upper()
