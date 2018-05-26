@@ -1,4 +1,3 @@
-import struct
 from ctypes import *
 
 __author__ = "David Debreceni Jr"
@@ -6,7 +5,8 @@ __author__ = "David Debreceni Jr"
 """
 Convert SSL/TLS Record Protocol bytes to more readable class.
 """
-class RecordProtocol(Structure):
+class RecordProtocol(BigEndianStructure):
+    _pack_ = 1
     _fields_ = [
         ("type", c_ubyte),
         ("version", c_ushort),
@@ -24,19 +24,17 @@ class RecordProtocol(Structure):
             0x17 : "Application_Data"
         }
 
+    @property
+    def Content_Type(self):
+        return self.record_types[self.type]
 
+    @property
+    def Version(self):
+        return VERSIONS[self.version]
 
-        @property
-        def Record_Type(self):
-            return self.record_types[self.type]
-
-        @property
-        def Version(self):
-            return self.versions[self.version]
-
-        @property
-        def Length(self):
-            return self.len
+    @property
+    def Length(self):
+        return self.len
 
 class Handshake_Protocol(Structure):
     _fields_ = [
