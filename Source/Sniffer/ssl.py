@@ -1,6 +1,6 @@
 from ctypes import *
 import binascii
-import Source\Abstract\TLSHelper
+import Source.Abstract.TLSHelper
 
 __author__ = "David Debreceni Jr"
 
@@ -39,7 +39,7 @@ class RecordProtocol(BigEndianStructure):
     def Length(self):
         return self.len
 
-class Server_Hello(BigEndianStructure):
+class ServerHello(BigEndianStructure):
     _pack_ = 1
     _fields_ = [
         ("type", c_ubyte),

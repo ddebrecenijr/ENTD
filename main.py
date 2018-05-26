@@ -10,6 +10,8 @@ import os
 import socket
 from Source.Sniffer.ethernet import Ethernet
 from Source.Sniffer.ipv4 import IPv4
+from Source.Sniffer.tcp import TCP
+from Source.Sniffer.ssl import RecordProtocol, ServerHello
 
 __author__ = "David Debreceni Jr"
 
@@ -57,12 +59,13 @@ def main():
             raw_buffer = sniffer.recvfrom(65565)[0]
 
             ethernet = Ethernet(raw_buffer[0:14])
-            print('--- ETHERNET FRAME ---')
-            print(f'Destination Address: {ethernet.Destination_Address}')
-            print(f'Source Address: {ethernet.Source_Address}')
-            print(f'Type: {ethernet.Type}')
+            if ethernet.Type == hex(8):
 
-            if ethernet.type == 8:
+                print('--- ETHERNET FRAME ---')
+                print(f'Destination Address: {ethernet.Destination_Address}')
+                print(f'Source Address: {ethernet.Source_Address}')
+                print(f'Type: {ethernet.Type}')
+
                 ip = IPv4(raw_buffer[14:34])
                 print('--- IPv4 FRAME ---')
                 print(f'Version: {ip.Version}')
@@ -75,6 +78,29 @@ def main():
                 print(f'Header Checksum: {ip.Header_Checksum}')
                 print(f'Source Address: {ip.Source_Address}')
                 print(f'Destination Address: {ip.Destination_Address}')
+
+                if ip.Protocol.equals("TCP"):
+
+                    tcp = TCP(raw_buffer[34:54])
+                    print('--- TCP FRAME ---')
+                    print(f'Source Port: {tcp.Source_Port}')
+                    print(f'Destination Port: {tcp.Destination_Port}')
+
+                    rec = RecordProtocol(raw_buffer[54:59])
+                    print('--- RECORD PROTOCOL ---')
+                    print(f'Content Type: {rec.Content_Type}')
+                    print(f'Version: {rec.Version}')
+                    print(f'Length: {rec.Length}')
+
+                    server = ServerHello(raw_buffer[59:])
+                    print('--- SERVER HELLO ---')
+                    print(f'Handshake Type: {server.Hanshake_type}')
+                    print(f'Length: {server.Length}')
+                    print(f'Version: {server.Version}')
+                    print(f'Random: {server.Random}')
+                    print(f'Session ID Length: {server.Session_ID_Length}')
+                    print(f'Selected CipherSuite: {server.CipherSuite}')
+
             
 
     except KeyboardInterrupt:
