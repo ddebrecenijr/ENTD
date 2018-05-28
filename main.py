@@ -60,11 +60,12 @@ def main():
 
             ethernet = Ethernet(raw_buffer[0:14])
             if ethernet.Type == 'IPv4':
+                ip = IPv4(raw_buffer[14:34])
                 if ip.Protocol == "TCP":
                     tcp = TCP(raw_buffer[34:54])
                     rec = RecordProtocol(raw_buffer[54:59])
                     server = ServerHello(raw_buffer[59:])
-
+                    
                     if server.Handshake_Type == "Server_Hello":
 
                         print('--- ETHERNET FRAME ---')
@@ -108,8 +109,9 @@ def main():
                         print()
 
             
-        except ValueError:
-            continue
+        except ValueError as e:
+            print(f'{e}')
+#            continue
         except KeyboardInterrupt:
             sys.exit()
 if __name__ == "__main__":

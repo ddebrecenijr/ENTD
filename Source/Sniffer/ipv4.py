@@ -1,3 +1,4 @@
+from Source.Abstract import TLSHelper
 import socket
 import struct
 from ctypes import *
@@ -27,11 +28,13 @@ class IPv4(BigEndianStructure):
 
 	def __init__(self, data=None):
 		self.protocol_map = { 6 : "TCP" }
-
+	
 	@property
 	def Version(self):
-		# 4 bits
-		return self.version
+		try:
+		    return TLSHelper.TLS_VERSIONS[self.version]
+		except KeyError:
+		    pass
 
 	@property
 	def IP_Header_Length(self):

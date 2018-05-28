@@ -1,6 +1,6 @@
 from ctypes import *
 import binascii
-import Source.Abstract.TLSHelper
+from Source.Abstract import TLSHelper
 
 __author__ = "David Debreceni Jr"
 
@@ -29,11 +29,17 @@ class RecordProtocol(BigEndianStructure):
 
     @property
     def Content_Type(self):
-        return self.record_types[self.type]
+        try:
+            return self.record_types[self.type]
+        except KeyError:
+            pass
 
     @property
     def Version(self):
-        return VERSIONS[self.version]
+        try:
+            return TLSHelper.TLS_VERSIONS[self.version]
+        except KeyError:
+            pass
 
     @property
     def Length(self):
@@ -66,7 +72,10 @@ class ServerHello(BigEndianStructure):
 
     @property
     def Version(self):
-        return TLSHelper.TLS_VERSIONS.get(self.version)
+        try:
+            return TLSHelper.TLS_VERSIONS.get(self.version)
+        except KeyError:
+            pass
 
     @property
     def Random(self):

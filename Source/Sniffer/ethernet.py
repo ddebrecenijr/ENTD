@@ -13,7 +13,7 @@ class Ethernet(BigEndianStructure):
         return self.from_buffer_copy(data)
 
     def __init__(self, data=None):
-        pass
+        self.proto = {0x0800 : 'IPv4'}
 
     @property
     def Destination_Address(self):
@@ -25,7 +25,10 @@ class Ethernet(BigEndianStructure):
 
     @property
     def Type(self):
-        return hex(self.type)
+        try:
+            return self.proto[self.type]
+        except KeyError:
+            pass
 
     def __get_mac_addr(self, raw):
         return ':'.join(map('{:02x}'.format, raw)).upper()
