@@ -21,8 +21,8 @@ class SVMModel:
 
     def __init__(self):
         self.sql_helper = SQL_Helper()
-        self.benign_data = self.__load_data("benign_domains", 1000)
-        self.malicious_data = self.__load_data("malicious_domains", 1000)
+        self.benign_data = self.__load_data("benign_domains")
+        self.malicious_data = self.__load_data("malicious_domains")
         self.data_set = []
         self.__extract_features(self.benign_data, 0)
         self.__extract_features(self.malicious_data, 1)
@@ -78,10 +78,14 @@ class SVMModel:
         self.model = SVC(kernel='rbf')
         self.model.fit(self.train_sample_x, self.train_sample_y)
 
-    def test_model(self, version, ciphersuite):
-        value = self.model.predict([version, ciphersuite])
-        if value == 1:
-            print('Found Malicious Data!')
+    def test_model(self, data):
+        values = self.model.predict(data)
+        print(values)
+        for value in values:
+            if value == 1:
+                print('Found Malicious Data!')
+            else:
+                print('Found Benign Data!')
 
 
     def generate_roc_curve(self):

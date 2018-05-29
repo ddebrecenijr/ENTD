@@ -62,7 +62,6 @@ class ServerHello(BigEndianStructure):
 
     @property
     def Handshake_Type(self):
-        print(self.type)
         return TLSHelper.HANDSHAKE_TYPES.get(self.type)
 
     @property
@@ -70,7 +69,7 @@ class ServerHello(BigEndianStructure):
         return self.len
     @property
     def Version(self):
-        self.version
+        return self.version
 
     @property
     def Random(self):
@@ -118,4 +117,4 @@ class ServerHello(BigEndianStructure):
             @property
             def Cipher_Suite(self):
                 return self.cipher
-        return Cipher(self.data[39 + 32:])
+        return Cipher(self.data[39 + 32:]).Cipher_Suite
