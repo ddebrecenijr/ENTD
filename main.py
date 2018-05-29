@@ -62,9 +62,9 @@ def main():
             if ethernet.Type == 'IPv4':
                 ip = IPv4(raw_buffer[14:34])
                 if ip.Protocol == "TCP":
-                    tcp = TCP(raw_buffer[34:54])
-                    rec = RecordProtocol(raw_buffer[54:59])
-                    server = ServerHello(raw_buffer[59:])
+                    tcp = TCP(raw_buffer[34:])
+                    rec = RecordProtocol(raw_buffer[34+tcp.Data_Offset:39+tcp.Data_Offset])
+                    server = ServerHello(raw_buffer[39+tcp.Data_Offset:])
 
                     if server.Handshake_Type == "Server_Hello":
 
@@ -73,7 +73,6 @@ def main():
                         print(f'Source Address: {ethernet.Source_Address}')
                         print(f'Type: {ethernet.Type}')
 
-                        ip = IPv4(raw_buffer[14:34])
                         print('--- IPv4 FRAME ---')
                         print(f'Version: {ip.Version}')
                         print(f'IP Header Length: {ip.IP_Header_Length}')
