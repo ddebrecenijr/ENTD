@@ -100,17 +100,10 @@ def main():
                         print(f'Version: {server.Version}')
                         print(f'Random: {server.Random}')
                         print(f'Session ID Length: {server.Session_ID_Length}')
-                        print(f'Selected CipherSuite: {server.CipherSuite}')
-
-                        a = input()
-
-                        print()
-                        print()
-
+                        print(f'Selected CipherSuite: {server.Cipher_Suite}')
 
         except ValueError as e:
-            print(f'{e}')
-#            continue
+            continue
         except KeyboardInterrupt:
             sys.exit()
 if __name__ == "__main__":
