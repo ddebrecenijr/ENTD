@@ -86,7 +86,44 @@ class ServerHello(BigEndianStructure):
         return self.session_id_length
 
     @property
+    def Session_ID(self):
+        if self.session_id_length != 0:
+            class Session(BigEndianStructure):
+                _pack_ = 1
+                _fields_ = [
+                    ("session_id", c_char * self.session_id_length)
+                ]
+
+                def __new__(self, data=None):
+                    return self.from_buffer_copy(data)
+
+                def __init__(self, data=None):
+                    pass
+
+                @property
+                def Session_ID(self):
+                    return self.session_id
+
+            return binascii.hexlify(Session(self.data[39:]).Session_ID)
+        else:
+            return None
+
+    @property
     def Cipher_Suite(self):
-        return TLSHelper.CIPHERSUITES[self.cipher_suite][0]
+        class Cipher(BigEndianStructure):
+            _pack_ = 1
+            _fields_ = [
+                ("cipher", c_ushort)
+            ]
 
+            def __new__(self, data=None):
+                return self.from_buffer_copy(data)
 
+            def __init__(self, data=None):
+                pass
+
+            @property
+            def Cipher_Suite(self):
+                return self.cipher
+
+        return tlshelper.CIPHERSUITES[Cipher(self.data[39 + self.session_id_length:]).Cipher_Suite][0]
