@@ -46,30 +46,28 @@ class RecordProtocol(BigEndianStructure):
         return self.len
 
 class ServerHello(BigEndianStructure):
-    _pack_ = 1
     _fields_ = [
         ("type", c_ubyte),
         ("len", c_char*3),
         ("version", c_ushort),
         ("random", c_char * 32),
-        ("session_id_length", c_ubyte),
-        ("cipher_suite", c_ushort)
+        ("session_id_length", c_ubyte)
     ]
     
     def __new__(self, data=None):
         return self.from_buffer_copy(data)
 
     def __init__(self, data=None):
-        pass
+        self.data = data
 
     @property
     def Handshake_Type(self):
+        print(self.type)
         return TLSHelper.HANDSHAKE_TYPES.get(self.type)
 
     @property
     def Length(self):
-        return int(self.len)
-
+        return self.len
     @property
     def Version(self):
         try:
@@ -89,7 +87,6 @@ class ServerHello(BigEndianStructure):
     def Session_ID(self):
         if self.session_id_length != 0:
             class Session(BigEndianStructure):
-                _pack_ = 1
                 _fields_ = [
                     ("session_id", c_char * self.session_id_length)
                 ]
@@ -111,7 +108,6 @@ class ServerHello(BigEndianStructure):
     @property
     def Cipher_Suite(self):
         class Cipher(BigEndianStructure):
-            _pack_ = 1
             _fields_ = [
                 ("cipher", c_ushort)
             ]
@@ -125,5 +121,4 @@ class ServerHello(BigEndianStructure):
             @property
             def Cipher_Suite(self):
                 return self.cipher
-
-        return tlshelper.CIPHERSUITES[Cipher(self.data[39 + self.session_id_length:]).Cipher_Suite][0]
+        return TLSHelper.CIPHERSUITES[Cipher(self.data[39 + 32:]).Cipher_Suite][0]

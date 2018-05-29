@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 
 from Source.Facade.ArgParseHelper import ArgParseHelper
 from Source.ProcessPacket import ProcessPacket
@@ -65,7 +65,7 @@ def main():
                     tcp = TCP(raw_buffer[34:54])
                     rec = RecordProtocol(raw_buffer[54:59])
                     server = ServerHello(raw_buffer[59:])
-                    
+
                     if server.Handshake_Type == "Server_Hello":
 
                         print('--- ETHERNET FRAME ---')
@@ -108,7 +108,7 @@ def main():
                         print()
                         print()
 
-            
+
         except ValueError as e:
             print(f'{e}')
 #            continue

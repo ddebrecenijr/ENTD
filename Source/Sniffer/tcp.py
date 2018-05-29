@@ -1,3 +1,4 @@
+import socket
 import struct
 from ctypes import *
 
@@ -19,7 +20,7 @@ class TCP(BigEndianStructure):
 		("cwr", c_ubyte, 1),
 		("ece", c_ubyte, 1),
 		("urg", c_ubyte, 1),
-		("ack", c_ubyte, 1),
+		("ack_f", c_ubyte, 1),
 		("psh", c_ubyte, 1),
 		("rst", c_ubyte, 1),
 		("syn", c_ubyte, 1),
@@ -37,15 +38,15 @@ class TCP(BigEndianStructure):
 
 	@property
 	def Source_Port(self):
-		return int(self.src)
+		return self.src
 
 	@property
 	def Destination_Port(self):
-		return int(self.dest)
+		return self.dest
 
 	@property
 	def Sequence_Number(self):
-		return int(self.seq)
+		return hex(self.seq)
 
 	@property
 	def Acknowledgment_Number(self):
@@ -53,7 +54,7 @@ class TCP(BigEndianStructure):
 
 	@property
 	def Data_Offset(self):
-		return self.off
+		return self.off*4
 
 	@property
 	def Reserved(self):
@@ -77,7 +78,7 @@ class TCP(BigEndianStructure):
 
 	@property
 	def ACK_Flag(self):
-		return self.ack
+		return self.ack_f
 
 	@property
 	def PSH_Flag(self):
