@@ -70,10 +70,7 @@ class ServerHello(BigEndianStructure):
         return self.len
     @property
     def Version(self):
-        try:
-            return TLSHelper.TLS_VERSIONS.get(self.version)
-        except KeyError:
-            pass
+        self.version
 
     @property
     def Random(self):
@@ -121,4 +118,4 @@ class ServerHello(BigEndianStructure):
             @property
             def Cipher_Suite(self):
                 return self.cipher
-        return TLSHelper.CIPHERSUITES[Cipher(self.data[39 + 32:]).Cipher_Suite][0]
+        return Cipher(self.data[39 + 32:])

@@ -78,6 +78,12 @@ class SVMModel:
         self.model = SVC(kernel='rbf')
         self.model.fit(self.train_sample_x, self.train_sample_y)
 
+    def test_model(self, version, ciphersuite):
+        value = self.model.predict([version, ciphersuite])
+        if value == 1:
+            print('Found Malicious Data!')
+
+
     def generate_roc_curve(self):
         X = numpy.c_[[row[:-1] for row in self.data_set]]
         y = numpy.c_[[row[-1] for row in self.data_set]]
